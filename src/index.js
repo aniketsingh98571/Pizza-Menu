@@ -14,7 +14,7 @@ function App(){
 function Header(){
     return (
         <header className="header">
-        <h1 >Fast React Pizza Co.</h1>
+           <h1 >Fast React Pizza Co.</h1>
         </header>
     )
 }
@@ -67,12 +67,13 @@ function Menu(){
     return (
         <main className="menu">
             <h2>Our Menus</h2>
+            <p>Authentic Italian cuisine. 6 creative dishes to choose from. All from our store over, all organic, all delicious.</p>
             <ul className="pizzas">
           {
-            
+           pizzaData.length>0&& 
             pizzaData.map((pizza)=>{
                 return (
-                    <Pizza key={pizza.name} name={pizza.name} ingredients={pizza.ingredients} photoName={pizza.photoName} price={pizza.price}/>
+                    <Pizza key={pizza.name} name={pizza.name} ingredients={pizza.ingredients} photoName={pizza.photoName} price={pizza.price} soldOut={pizza.soldOut}/>
                 )
             })
            
@@ -81,17 +82,26 @@ function Menu(){
         </main>
     )
 }
-function Pizza(props){
+function Pizza({name,ingredients,photoName,price,soldOut}){
+  // if(soldOut) return null;
    return (
-        <div className="pizza">
-            <img src={props.photoName} alt="pizza"/>
+        <div className={`pizza ${soldOut?`sold-out`:""}`}>
+            <img src={photoName} alt="pizza"/>
             <div>
-                <h2>{props.name}</h2>
-                <p>{props.ingredients}</p>
-                <span>{props.price}</span>
+                <h2>{name}</h2>
+                <p>{ingredients}</p>
+                <span>{soldOut?"SOLD OUT":price}</span>
             </div>
         </div>
     )
+}
+function Order(){
+  return (
+    <div className="order">
+      <p> We're currently Open!</p>   
+      <button className="btn">Order</button>
+   </div>
+  )
 }
 function Footer(){
     const hour=new Date().getHours()
@@ -105,10 +115,7 @@ function Footer(){
         <footer className="footer">{new Date().toLocaleTimeString()} 
         {
              isOpen?
-                <div className="order">
-                    <p> We're currently Open!</p>   
-                    <button className="btn">Order</button>
-                </div>:
+              <Order/>:
             <p>We're currently Closed!</p>
          }
          </footer>
